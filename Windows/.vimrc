@@ -1,3 +1,4 @@
+set shell=bash
 set nocompatible                " choose no compatibility with legacy vi
 imap jk <ESC>
 filetype off                    " required!
@@ -25,7 +26,7 @@ Bundle 'tpope/vim-projectionist'
 Bundle 'tpope/vim-rbenv'
 Bundle 'tpope/vim-rake'
 Bundle 'vim-scripts/taglist.vim'
-Bundle 'ngmy/vim-rubocop'
+"Bundle 'ngmy/vim-rubocop'
 Bundle 'rainerborene/vim-reek'
 Bundle 'mileszs/ack.vim'
 Bundle 'davidkariuki/sexy-railscasts-256-theme'
@@ -44,18 +45,20 @@ Bundle 'docker/docker', {'rtp': 'contrib/syntax/vim' }
 Bundle 'tpope/vim-endwise'
 Bundle 'tomasr/molokai'
 Bundle 'elzr/vim-json'
-Plugin 'gmoe/vim-espresso'
+Bundle 'inside/vim-search-pulse'
+Bundle 'gmoe/vim-espresso'
 Plugin 'jnurmine/Zenburn'
 Plugin 'ervandew/supertab'
 Plugin 'editorconfig/editorconfig-vim'
-
+Plugin 'vim-scripts/CursorLineCurrentWindow'
+Plugin 'ekalinin/Dockerfile.vim'
 
 filetype plugin indent on     " required!
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 syntax on
 
-"" Whitespace
+" Whitespace
 set nowrap                      " don't wrap lines
 set tabstop=2                   " a tab is two spaces
 set shiftwidth=2                " two soaces for indentation
@@ -66,7 +69,7 @@ set autoindent                  " autoindent
 set smartindent                 " smartindent
 set backspace=indent,eol,start
 
-"" Searching
+" Searching
 set hlsearch                    " highlight matches
 set incsearch                   " incremental searching
 set ignorecase                  " search are case insensitive....
@@ -78,6 +81,8 @@ set lcs=tab:▸\ ,trail:·         " Show 'invisible' characters
 set list
 
 set hidden                      " Allow buffer hiding
+
+set cursorline                  " Display cursor
 
 " windows
 map <C-h> <C-w>h
@@ -96,7 +101,7 @@ map <C-n> :tabnew<CR>
 " nnoremap <leader>h :noh<CR>    " Removes search hihlights
 " map <leader>g mzgg=G`z<CR>    " Reformat the whole file
 
-" " backups and swap
+" backups and swap
 set noswapfile
 " Do not back up files in the local dir
 set backupdir=~/.vim/backup//
@@ -140,7 +145,16 @@ python del powerline_setup
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " syntastic
-let g:syntastic_ruby_checkers = ['mri', 'rubocop', 'rubylint']
+let g:syntastic_ruby_checkers=['mri', 'rubocop', 'rubylint']
+"let g:syntastic_ruby_rubocop_exec='RBENV_VERSION=2.2.3 /cygdrive/c/Ruby22-x64/bin/rubocop.bat'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Disable Reek lauching at load/save time
 let g:reek_on_loading = 0
@@ -170,4 +184,11 @@ let g:nerdtree_tabs_focus_on_files = 1
 
 " Path to editor config (Windows only)
 let g:EditorConfig_exec_path ='/cygdrive/c/ProgramData/chocolatey/bin/'
+
+" Sets whether the cursor line pulses
+let g:vim_search_pulse_mode = 'cursor_line'
+
+" Taglist
+" Auto update tags list
+let Tlist_Auto_Update = 1
 

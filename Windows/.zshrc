@@ -50,7 +50,6 @@ ZSH_THEME="blinks"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git git-extras github ruby thor rake sudo tmux npm node heroku gem)
-
 # User configuration
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -83,9 +82,10 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
+alias zshconfig="vim ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source /home/$USER/.babun-docker/setup.sh
+eval $("docker-machine" env default --shell=zsh)
+source /home/jeremie.veillet/.babun-docker/setup.sh
 
 # Docker dev environment
 alias docdev="docker-compose -f development.yml"
@@ -97,6 +97,48 @@ alias machine-stop="docker-machine stop default"
 # Alias for ruby
 alias ruby='/cygdrive/c/Ruby22-x64/bin/ruby'
 alias gem='/cygdrive/c/Ruby22-x64/bin/gem.bat'
+alias rubocop='/cygdrive/c/Ruby22-x64/bin/rubocop.bat'
+alias reek='/cygdrive/c/Ruby22-x64/bin/reek.bat'
 
-# ZSH style
+#
+zstyle ':completion::complete:grunt::options:' show_grunt_path yes
 zstyle ':completion:*' use-cache yes
+source '/home/jeremie.veillet/.babun-docker/setup.sh'
+
+# Note: ~/.ssh/environment should not be used, as it
+# already has a different purpose in SSH.
+env=~/.ssh/agent.env
+
+# Note: Don't bother checking SSH_AGENT_PID. It's not used
+# by SSH itself, and it might even be incorrect
+# (for example, when using agent-forwarding over SSH).
+agent_is_running() {
+  if [ "$SSH_AUTH_SOCK" ]; then
+    # ssh-add returns:
+    # 0 = agent running, has keys
+    # 1 = agent running, no keys
+    # 2 = agent not running
+    ssh-add -l >/dev/null 2>&1 || [ $? -eq 1 ]
+  else
+    false
+  fi
+}
+
+agent_has_keys() {
+  ssh-add -l >/dev/null 2>&1
+}
+
+agent_load_env() {
+  . "$env" >/dev/null
+}
+
+agent_start() {
+  (umask 077; ssh-agent >"$env")
+  . "$env" >/dev/null
+}
+
+if ! agent_is_running; then
+  agent_load_env
+fi
+
+unset env
