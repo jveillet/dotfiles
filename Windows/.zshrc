@@ -49,7 +49,8 @@ ZSH_THEME="blinks"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-extras github ruby thor rake sudo tmux npm node heroku gem)
+plugins+=(zsh-completions git git-extras github ruby thor rake sudo tmux npm node heroku gem)
+autoload -U compinit && compinit
 # User configuration
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -95,15 +96,14 @@ alias machine-start="docker-machine start default"
 alias machine-stop="docker-machine stop default"
 
 # Alias for ruby
-alias ruby='/cygdrive/c/Ruby22-x64/bin/ruby'
-alias gem='/cygdrive/c/Ruby22-x64/bin/gem.bat'
-alias rubocop='/cygdrive/c/Ruby22-x64/bin/rubocop.bat'
-alias reek='/cygdrive/c/Ruby22-x64/bin/reek.bat'
+#alias ruby='/cygdrive/c/Ruby22-x64/bin/ruby'
+#alias gem='/cygdrive/c/Ruby22-x64/bin/gem.bat'
+#alias rubocop='/cygdrive/c/Ruby22-x64/bin/rubocop.bat'
+#alias reek='/cygdrive/c/Ruby22-x64/bin/reek.bat'
 
 #
 zstyle ':completion::complete:grunt::options:' show_grunt_path yes
 zstyle ':completion:*' use-cache yes
-source '/home/jeremie.veillet/.babun-docker/setup.sh'
 
 # Note: ~/.ssh/environment should not be used, as it
 # already has a different purpose in SSH.
@@ -142,3 +142,4 @@ if ! agent_is_running; then
 fi
 
 unset env
+source '/home/jeremie.veillet/.babun-docker/setup.sh'
