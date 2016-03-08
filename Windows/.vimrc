@@ -1,11 +1,10 @@
-set shell=bash
-set nocompatible                " choose no compatibility with legacy vi
-imap jk <ESC>
-filetype off                    " required!
+" Choose no compatibility with legacy vi.
+set nocompatible
+filetype off
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/vundle.vim
 call vundle#rc()
-
+ 
 " let Vundle manage Vundle
 " required!
 Bundle 'gmarik/vundle'
@@ -51,9 +50,8 @@ Plugin 'jnurmine/Zenburn'
 Plugin 'ervandew/supertab'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'vim-scripts/CursorLineCurrentWindow'
-Plugin 'ekalinin/Dockerfile.vim'
 
-filetype plugin indent on     " required!
+filetype plugin indent on       " required!
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 syntax on
@@ -145,8 +143,7 @@ python del powerline_setup
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 " syntastic
-let g:syntastic_ruby_checkers=['mri', 'rubocop', 'rubylint']
-"let g:syntastic_ruby_rubocop_exec='RBENV_VERSION=2.2.3 /cygdrive/c/Ruby22-x64/bin/rubocop.bat'
+"let g:syntastic_ruby_checkers=['mri', 'rubocop', 'rubylint']
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -191,4 +188,3 @@ let g:vim_search_pulse_mode = 'cursor_line'
 " Taglist
 " Auto update tags list
 let Tlist_Auto_Update = 1
-
