@@ -5,7 +5,8 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="blinks"
+#ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -51,18 +52,18 @@ ZSH_THEME="blinks"
 # Add wisely, as too many plugins slow down shell startup.
 plugins+=(zsh-completions git git-extras github ruby thor rake sudo tmux npm node heroku gem)
 autoload -U compinit && compinit
-# User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export LANG=en_US.UTF-8
-export EDITOR=vim
-export PYTHONPATH=/usr/lib/python2.7/site-packages
+# User configuration
+#export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/$HOME/bin:/$HOME/.gem/ruby/2.1.0/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -70,6 +71,7 @@ source $ZSH/oh-my-zsh.sh
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='vim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -84,25 +86,23 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 alias zshconfig="vim ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-eval $("docker-machine" env default --shell=zsh)
-source $HOME/.babun-docker/setup.sh
+alias vimconfig="vim ~/.vimrc"
+alias tmuxconfig="vim ~/.tmux.conf"
+alias ohmyzsh="vim ~/.oh-my-zsh"
+alias tmux="tmux -2"
 
 # Docker dev environment
 alias docdev="docker-compose -f development.yml"
 
-# Aliases to interact with docker macine
-alias machine-start="docker-machine start default"
-alias machine-stop="docker-machine stop default"
+# Aliases to interact with docker machine
+alias ews-shotgun="docker-compose -f development.yml run --rm -p 4000:3000 web bundle exec shotgun -o 0.0.0.0"
+alias esu-shotgun="docker-compose run --rm -p 4001:3000 web bundle exec shotgun -o 0.0.0.0"
 
-# Alias for ruby
-#alias ruby='/cygdrive/c/Ruby22-x64/bin/ruby'
-#alias gem='/cygdrive/c/Ruby22-x64/bin/gem.bat'
-#alias rubocop='/cygdrive/c/Ruby22-x64/bin/rubocop.bat'
-#alias reek='/cygdrive/c/Ruby22-x64/bin/reek.bat'
+# Directory aliases
+alias eventws="cd ~/Dev/wef-event-services"
+alias support="cd ~/Dev/event-support"
 
-#
-zstyle ':completion::complete:grunt::options:' show_grunt_path yes
+# ZSH completion
 zstyle ':completion:*' use-cache yes
 
 # Note: ~/.ssh/environment should not be used, as it
@@ -142,4 +142,12 @@ if ! agent_is_running; then
 fi
 
 unset env
+
+for dir in $HOME/.gem/ruby/*; do
+    [ -d "$dir/bin" ] && PATH="${dir}/bin:${PATH}"
+done
+
+if which ruby >/dev/null && which gem >/dev/null; then
+  PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
 
