@@ -50,7 +50,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins+=(zsh-completions git git-extras github ruby thor rake sudo tmux npm node heroku gem)
+plugins+=(zsh-completions git git-extras github ruby thor rake sudo tmux npm node heroku gem bundler common-aliases docker docker-compose redis-cli)
 autoload -U compinit && compinit
 
 # User configuration
@@ -91,16 +91,36 @@ alias tmuxconfig="vim ~/.tmux.conf"
 alias ohmyzsh="vim ~/.oh-my-zsh"
 alias tmux="tmux -2"
 
-# Docker dev environment
-alias docdev="docker-compose -f development.yml"
+# Docker compose shortcut
+alias dose="docker-compose"
 
-# Aliases to interact with docker machine
-alias ews-shotgun="docker-compose -f development.yml run --rm -p 4000:3000 web bundle exec shotgun -o 0.0.0.0"
-alias esu-shotgun="docker-compose run --rm -p 4001:3000 web bundle exec shotgun -o 0.0.0.0"
+# Execute shotgun on the projet
+# @param $1 [port] local port number to forward on the host
+function shoot() {
+  if [ -n "$1" ]
+  then
+    echo "Launching shotgun on port $1..."
+    if [ -n "$2" ]
+    then
+      # Launch a specific container
+      dose run --rm -p "$1":3000 "$2" bundle exec shotgun -o 0.0.0.0
+    else
+      # Launch the default container "web"
+      dose run --rm -p "$1":3000 web bundle exec shotgun -o 0.0.0.0
+    fi
+  fi
+}
 
 # Directory aliases
-alias eventws="cd ~/Dev/wef-event-services"
-alias support="cd ~/Dev/event-support"
+
+# Toplink encryption
+# @param $1 [account_id] The Id to encrypt
+function tl-encrypt() {
+  if [ -n "$1" ]
+  then
+    dose run --rm web bundle exec thor toplink:encrypt $1
+  fi
+}
 
 # ZSH completion
 zstyle ':completion:*' use-cache yes
